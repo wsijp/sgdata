@@ -1,0 +1,20 @@
+
+{% extends "base.html" %}
+
+{% load comment_tags %}
+
+
+
+{% block title %}Figures for project {% if project %}{{ project.name }}{% endif %}     {% endblock %}
+
+
+{% block main %}
+
+Thank you for commenting. 
+
+{% if project.restricted %} (restricted access) {% endif %}
+  
+
+
+
+{% endblock %}

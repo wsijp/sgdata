@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load mezzanine_tags staticfiles %}
+{% comment %}
+
+templates/pages/figpage.html
+        -- custom page template for fig pages (behaves just like a regular richtext page)
+
+{% endcomment %}
+
+{% block title %}Figures for project {% if project %}{{ project.name }}{% endif %}     {% endblock %}
+
+{% block main %}
+{% if project.restricted %} (restricted access) {% endif %}
+        {{ block.super }}
+        {% editable page.figpage.content %}
+                {{ page.figpage.content| richtext_filters | safe }}
+        {% endeditable %}
+
+{% if save_but %}
+    <div class="show_save" style="display: none;">true</div>
+{% else %}
+    <div class="show_save" style="display: none;">false</div>
+{% endif %}
+
+
+
+<script src="{% static "js/sgweb.js" %}"> </script>
+<script type="text/javascript">
+
+var cleanConf=new figConfig(['Submit','project'],[false,{% if project %} '{{ project.name }}'  {% endif %}])
+
+var newFigDiv=d3.select("body").append("div")
+
+$(document).ready(function(){
+var nfBut=d3.select(".newButDiv")
+
+if (nfBut!=='undefined'){
+	nfBut.append("button")
+    .attr("href","")
+    .attr("type","button")
+    .attr("id","addbut")
+    .attr("class","btn btn-default")
+    .text("Create New Figure")
+    .on("click", function(){createFig(newFigDiv,cleanConf)});
+}
+
+    scanPage({% if project %} '{{ project.name }}'  {% endif %})
+})
+
+
+</script>
+
+
+{% endblock %}

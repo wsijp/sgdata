@@ -1,0 +1,60 @@
+
+body {
+  position: relative;
+}
+
+svg,
+canvas {
+    position: relative;
+}
+
+.axis text {
+    font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+
+
+.my_axis path,
+.my_axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.my_axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+
+.my_colorbar text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+
+.my_flabel text {
+    font-family: sans-serif;
+    font-size: 13px;
+}
+
+.my_clabel text {
+    font-family: sans-serif;
+    font-size: 12px;
+}
+      
+.line {
+  fill: none;
+ 
+  stroke-width: 1.5px;
+}     
+
+.pos_top {
+    position: relative;
+    top: -400px;
+}
