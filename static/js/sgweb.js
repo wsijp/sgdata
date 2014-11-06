@@ -1395,7 +1395,7 @@ var hxlabel=haxes.append("g")
 }
 
 // bigDiv is a hack, maybe use parent node instead
-function makeUpdateCmap(data,bigDiv,num_cont){
+function makeUpdateCmap(data,bigDiv,num_cont,fConf){
 
    function func(div,map){
         
@@ -1412,7 +1412,12 @@ function makeUpdateCmap(data,bigDiv,num_cont){
            updateColors(svg,colours)
        }
   
-       updateCBar(svg,colours)   
+       updateCBar(svg,colours)
+
+       if (map !=null){
+           fConf.set("cmap",map)
+       }
+   
    } 
 
     return func
@@ -1535,39 +1540,6 @@ function rha(div,data,fConf){
         }
     }
 
- //   var geoSpan=destDiv.append("div")
- //                      .attr("class","tempbut form-group  col-xs-2 col-sm-2 col-md2")
-
- //   geoSpan.append("br")
-//    var lbl=geoSpan.append("label")
-//        .attr("for","kmt")
-//        .attr("class","tempbut control-label col-xs-2 col-sm-2 col-md2")
-//        .text("geography")
-
-//    console.log(axob)
-
-
-            
-//    var exFldSpan=extraDiv.append("span")
-//                         .attr("class","tempbut") 
-
-//    exFldSpan.append("label")
-//            .attr("for","extra_field")
-//            .attr("class","tempbut")
-//            .text("Overlay Field")
-
-//    but=exFldSpan
-//           .append("text")
-
-//    but.attr("id","extra_field")
-//       .attr("class","tempbut")
-//            .text("extra field")
-//            .on("click",function(d){
-//   d3.json(prep_url('P__'+exp+'__O_psi',ops="nop"),function(error,data){
-//    if (error) return console.warn(error);
-//    addtoggle(axob,exFldSpan,data,handle_more_data,"hiddenMore","True","False","click",false)})
-//             })
-
 }
 
 
@@ -1599,7 +1571,7 @@ function display2D(axob,data,fConf){
 //            .attr("class","tempbut control-label col-sm-2")
 //            .text("Colormap")
 
-    makeDropdown(destDiv.append("div").attr("class","tempbut col-xs-2  col-sm-2  col-md-2"),d3.keys(cmaps),fConf.fill("cmap",""),makeUpdateCmap(data,axob.div,num_col))
+    makeDropdown(destDiv.append("div").attr("class","tempbut col-xs-2  col-sm-2  col-md-2"),d3.keys(cmaps),fConf.fill("cmap",""),makeUpdateCmap(data,axob.div,num_col,fConf))
     .attr("class","tempbut form-control input-sm")
     .attr("name","colormap")
     .attr("id","cmap")
@@ -1607,6 +1579,7 @@ function display2D(axob,data,fConf){
 
     // should we use selection.node()
     var map=axob.div.select("#cmap")[0][0].value
+
 
     var colours=make_cmap(map,data.m,data.M,num_col);
 
@@ -1631,17 +1604,20 @@ function display2D(axob,data,fConf){
 //            .attr("class","tempbut control-label col-xs-2 col-sm-2 col-md2")
 //            .text("Contours")
 
+
+console.log(data)
+
     d3.json(prep_url(fConf.fill("project"),'P__'+data.expname+'__$kmt$',ops="nop"),function(error,data){
     if (error){ return console.warn(error)};
 
 
-    addtoggle(axob,destDiv,data,my_kmt,"hiddenKmt","No Geogr","geography","click", fConf.fill("kmt" ,false) )
+    addtoggle(axob,destDiv,data,my_kmt,"hiddenKmt","No Geogr","geography","click", fConf,"kmt")
                      .attr("id","kmt")
                     .attr("name","kmt")
                      .attr("class","btn btn-default tempbut")
     })
  
-    elms = elms.push(addtoggle(axob,destDiv,data,handle_more_data,"hiddenCont","Conts off","Contours","click",fConf.fill("contog",false) )
+    elms = elms.push(addtoggle(axob,destDiv,data,handle_more_data,"hiddenCont","Conts off","Contours","click",fConf,"contog" )
                .attr("id","contog").attr('name','contog').attr("class","btn btn-default  tempbut"))
 
     return elms
@@ -1663,7 +1639,7 @@ function toggle(w,axob,data,but,func,onms,offms,hiddenF){
     }    
 };
 
-function addtoggle(axob,controlDiv,data,func,hiddenFid,onms,offms,action,initBool){
+function addtoggle(axob,controlDiv,data,func,hiddenFid,onms,offms,action,fConf,Item){
     // adds interactive element to toggle content of div
 
     var w,
@@ -1673,6 +1649,9 @@ function addtoggle(axob,controlDiv,data,func,hiddenFid,onms,offms,action,initBoo
  //       onms="remove conts";
 //    but=controlDiv.append(tag)
 //            .attr("class","tempbut")
+
+    var initBool=fConf.fill(Item ,false)
+
 
     but=controlDiv.append("button")
 
@@ -1696,23 +1675,36 @@ function addtoggle(axob,controlDiv,data,func,hiddenFid,onms,offms,action,initBoo
         but.on(action,function(d){
             // need to wrap toggle var w inside here:
                 w=toggle(w,axob,data,but,func,onms,offms,hiddenF)
+                     if (Item !=null){
+                      
+                        fConf.set(Item,(w!=false))
+                    }
             
                 but.on(action,function(d){
                     w=toggle(w,axob,data,but,func,onms,offms,hiddenF)   
+                     if (Item !=null){
+                      
+                        fConf.set(Item,(w!=false))
+                    }
                 });
             }) 
     }else{        
         but.on(action,function(d){
             // need to wrap toggle var w inside here:
                 w=toggle(false,axob,data,but,func,onms,offms,hiddenF)
-            
+                     if (Item !=null){
+                      
+                        fConf.set(Item,(w!=false))
+                    }            
                 but.on(action,function(d){
                     w=toggle(w,axob,data,but,func,onms,offms,hiddenF)   
+                    if (Item !=null){
+                      
+                        fConf.set(Item,(w!=false))
+                    }
             });
         })
     }
-
-
 
     return but
 }
@@ -1731,11 +1723,11 @@ function remhandles(handles){
 }
 
 function cycler(w,wmax,axob,data,but,func,fConf){
-
+ 
     w=(w+1)%wmax
 
     console.log(w)
-
+    console.log(wmax)
     console.log(data.slices[w])
 
     but.text("slice "+data.scoord[w])
@@ -1768,9 +1760,12 @@ function addcycler(axob,data,func,div,initSlice,fConf){
     var valueFld=subDiv.append("input")
        .attr("type","hidden")
 
+    if (isNaN(initSlice)){initSlice=0}
+
             // need to wrap cycler var w inside here:
     clr=cycler(initSlice-1,wmax,axob,data,but,func,fConf)
     w=clr[0]
+    
     valueFld.attr("value",w)
 
     but.on("click",function(d){

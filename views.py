@@ -148,6 +148,8 @@ def ret_field_ops(request, project,fields):
   fld = I[-1]
 
   expname=I[-2].name
+#  print 'expname: ',
+#  print expname
 
  # interpret returns a string when the object is not known: change this
  # print type(ops)

@@ -358,7 +358,7 @@ def make_msg(fld,expname='None'):
     fsliced = fld.regrid(coord0**2)
     msg = {'name':fld.name,'lname':fld.long_name,'M':str(M),'m':str(m), 'ndim':ndim, 'units':fld.units}
     
-    msg["slices"] = [make_msg(e) for e in fsliced]
+    msg["slices"] = [make_msg(e,expname) for e in fsliced]
     msg["scoord"] = coord0.value.tolist()   
 
     # EXIT POINT
@@ -383,7 +383,7 @@ def make_msg(fld,expname='None'):
       strings = []
     else:
       strings = fld.grid[i].strings 
-    print strings   
+   
     msg['coord'+str(i)+'_strings'] = strings    
 
   return msg

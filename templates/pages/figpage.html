@@ -27,7 +27,7 @@ templates/pages/figpage.html
 <script src="{% static "js/sgweb.js" %}"> </script>
 <script type="text/javascript">
 
-var cleanConf=new figConfig(['Submit','project'],[false,{% if project %} '{{ project.name }}'  {% endif %}])
+var cleanConf=new figConfig(['Submit','project','cycle3D'],[false,{% if project %} '{{ project.name }}'  {% endif %}  ,0 ]  )
 
 var newFigDiv=d3.select("body").append("div")
 
