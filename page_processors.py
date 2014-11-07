@@ -30,8 +30,13 @@ def page_view(request, page):
 
 #    print project
 
-    if (request.user is not None)  and request.user.is_authenticated() and (this_page.filter(groups__in=request.user.groups.all()) ):
-        return {"page": page,"project": project,"save_but":True} 
+    if (request.user is not None)  and request.user.is_authenticated(): 
+        
+        try:  # having trouble with non-logged in user
+          if (this_page.filter(groups__in=request.user.groups.all()) ):
+            return {"page": page,"project": project,"save_but":True} 
+        except:
+            return {"page": page,"project": project,"save_but":False}   
     else: 
         return {"page": page,"project": project,"save_but":False}
 
