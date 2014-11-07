@@ -30,7 +30,7 @@ def page_view(request, page):
 
 #    print project
 
-    if (request.user is not None)  and request.user.is_authenticated(): 
+    if request.user.is_authenticated(): 
         
         try:  # having trouble with non-logged in user
           if (this_page.filter(groups__in=request.user.groups.all()) ):
