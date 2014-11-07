@@ -374,7 +374,7 @@ function createFig(div,fConf){
 
             
 
-            makeDropdown(fg.append("div").attr("class","col-xs-3 col-sm-2"),['pcolor','image'],fConf.fill("selpc","image"),pcolChanged)
+            makeDropdown(fg.append("div").attr("class","col-xs-3 col-sm-2"),['pcolor','image'],fConf.fill("selpc","pcolor"),pcolChanged)
                 .attr("class","selpcolor form-control input-sm ")
                 .attr("id","selpc")
                 .attr("name","selpc")
@@ -974,7 +974,7 @@ function handle_series(div,data){
     // nseries is an array of key-value objects, where the value is an array of x-y objects (points)
     var nseries=init_nseries(data.value[0],coord)
 
-    var ylabel=data.units,
+    var ylabel='',
         xlabel=data.coord1_lname,    
         title=data.lname;
 
@@ -2047,8 +2047,9 @@ function plot_contour(svg,data,ycoord,xcoord,xScale,yScale,m,M, num_cont, conts,
                 }else{
                     lbl=lbl.toFixed(1)
                 }
-            }
 
+            }
+            if (lbl == '0.0e+0'){lbl='0'}
 
             lbpos.push( [nested[i].values[j][cont_i1].x,nested[i].values[j][cont_i1].y,  lbl    ]  )
 

@@ -28,7 +28,7 @@ def make_ops(knownobs):
     new_keys=[]
     # create operators
     axnames=['X','Y','Z','T']
-    opnames=["Prim","Integ","Mean"] 
+    opnames=["Prim","Integ","Mean","Der"] 
 
     op=sg.nop 
     opkey="nop"
